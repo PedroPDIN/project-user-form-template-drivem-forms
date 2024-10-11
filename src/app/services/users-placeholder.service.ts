@@ -6,7 +6,7 @@ import { UsersPlaceholderListResponse } from "../types/users-placeholder-list-re
 @Injectable({
   providedIn: 'root',
 })
-export class UsersPlaceholder {
+export class UsersPlaceholderService {
   constructor(private readonly _httpClient: HttpClient) {}
 
   getUsersPlaceholder(): Observable<UsersPlaceholderListResponse> {

@@ -1,4 +1,12 @@
-<app-users-card-list
-  [usersList]="usersList"
-  (onUserSelected)="onUserSelected($event)"
-></app-users-card-list>
+<div style="margin-bottom: 20px">
+  <app-users-card-list
+    [usersList]="usersList"
+    (onUserSelected)="onUserSelected($event)"
+  ></app-users-card-list>
+</div>
+
+<app-users-form
+  [genresList]="genresList"
+  [statesList]="brazilianStates"
+  [userSelected]="userSelected"
+></app-users-form>

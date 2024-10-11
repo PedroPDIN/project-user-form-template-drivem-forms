@@ -36,9 +36,7 @@ export class AppComponent implements OnInit {
 
     if (userFound) {
       this.userSelectedIndex = userIndex;
-      this.userSelected = structuredClone(userFound); // structuredClone() = método javascript que é responsável por clonar valores.
-
-      console.log(this.userSelectedIndex, this.userSelected);
+      this.userSelected = structuredClone(userFound); // structuredClone() = método javascript que é responsável por clonar valores (objetos...).
     }
   }
 
