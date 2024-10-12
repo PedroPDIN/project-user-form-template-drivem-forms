@@ -1,7 +1,7 @@
 <mat-card>
   <mat-card-content>
 
-    <form class="user-form">
+    <form class="user-form" #userForm="ngForm" appPasswordConfirmationValidator> <!-- Interessante para os valores do elementos de forma "global", bastante util na criação na logica de confirmação de senha.-->
       <div class="user-form__row">
         <mat-form-field class="user-form__item user-form__item-100">
           <mat-label>Nome:</mat-label>
@@ -46,6 +46,7 @@
       </div>
 
       <div class="user-form__row">
+
         <mat-form-field class="user-form__item user-form__item-50">
           <mat-label>Senha: </mat-label>
           <input
@@ -71,6 +72,52 @@
             'strong-password': passwordStrengthValue === 100
           }"
           ></mat-progress-bar>
+        </mat-form-field>
+
+        <mat-form-field class="user-form__item user-form__item-50">
+          <mat-label>confirmação de Senha: </mat-label>
+
+          <input
+            type="text"
+            name="confirmacaoSenha"
+            matInput
+            ngModel
+            #passwordConfirmationControl="ngModel"
+            required />
+
+          <mat-error *ngIf="passwordConfirmationControl.hasError('required')">
+            O campo <strong>Confirmação de Senha</strong> é obrigatório.
+          </mat-error>
+
+          <mat-error *ngIf="passwordConfirmationControl.hasError('invalidPasswordConfirmation') && !passwordConfirmationControl.hasError('required')">
+            As <strong>Senhas</strong> estão incorretas.
+          </mat-error>
+        </mat-form-field>
+
+      </div>
+
+      <div class="user-form__row">
+        <mat-form-field>
+          <mat-label>Data de Nascimento:</mat-label>
+          <input
+            matInput
+            [matDatepicker]="picker"
+            [min]="minDate"
+            [max]="maxDate"
+            name="dataNascimento"
+            [ngModel]="dataValue"
+            readonly
+            required
+          />
+          <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+          <mat-datepicker #picker>
+            <mat-datepicker-actions>
+              <button mat-button matDatepickerCancel>Cancelar</button>
+              <button mat-raised-button matDatepickerApply color="primary">Confirmar</button>
+            </mat-datepicker-actions>
+          </mat-datepicker>
+          <mat-hint>dd/mm/aaaa</mat-hint>
+          <mat-error>O campo <strong>Data de Nascimento</strong> é obrigatório.</mat-error>
         </mat-form-field>
       </div>
 

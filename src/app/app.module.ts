@@ -6,6 +6,7 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 import { ComponentsModule } from './components/components.module';
+import { MAT_DATE_LOCALE } from '@angular/material/core';
 
 @NgModule({
   declarations: [AppComponent],
@@ -15,7 +16,13 @@ import { ComponentsModule } from './components/components.module';
     ComponentsModule,
     HttpClientModule,
   ],
-  providers: [provideAnimationsAsync()],
+  providers: [
+    provideAnimationsAsync(),
+    {
+      provide: MAT_DATE_LOCALE,
+      useValue: 'pt-BR',
+    }
+  ],
   bootstrap: [AppComponent],
 })
 export class AppModule {}
