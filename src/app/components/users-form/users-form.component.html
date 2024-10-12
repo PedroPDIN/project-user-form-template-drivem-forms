@@ -97,7 +97,7 @@
       </div>
 
       <div class="user-form__row">
-        <mat-form-field>
+        <mat-form-field class="user-form__item user-form__item-50">
           <mat-label>Data de Nascimento:</mat-label>
           <input
             matInput
@@ -106,6 +106,7 @@
             [max]="maxDate"
             name="dataNascimento"
             [ngModel]="dataValue"
+            (dateChange)="onDateChange($event)"
             readonly
             required
           />
@@ -119,6 +120,15 @@
           <mat-hint>dd/mm/aaaa</mat-hint>
           <mat-error>O campo <strong>Data de Nascimento</strong> é obrigatório.</mat-error>
         </mat-form-field>
+
+        <mat-form-field class="user-form__item user-form__item-50">
+          <mat-label>Estado:</mat-label>
+            <mat-select name="estado" [(ngModel)]="userSelected.state" required>
+              <mat-option>-</mat-option>
+              <mat-option *ngFor="let state of statesList" [value]="state.id">{{ state.descricao }}</mat-option>
+            </mat-select>
+            <mat-error>O campo <strong>Estado</strong> é obrigatório.</mat-error>
+          </mat-form-field>
       </div>
 
     </form>
