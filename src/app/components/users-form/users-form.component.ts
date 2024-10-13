@@ -17,6 +17,8 @@ export class UsersFormComponent implements OnChanges, OnInit {
   minDate: Date | null = null;
   maxDate: Date | null = null;
   dataValue: Date | null = null;
+  displayedColumns: string[] = ['title', 'band', 'genre', 'favorite'];
+  filteredGenresList: GenresListResponse = [];
 
   @Input({ required: true }) genresList: GenresListResponse = [];
   @Input({ required: true }) statesList: StatesListResponse = [];
@@ -33,6 +35,7 @@ export class UsersFormComponent implements OnChanges, OnInit {
     if (USER_CHANGED) {
       this.onPasswordChange(this.userSelected.password);
       this.setBirthDateToDatepicker(this.userSelected.birthDate);
+      this.filteredGenresList = this.genresList; // quando houver uma troca de usuários, haverá um reset na lista de filtros.
     }
   }
 
@@ -42,12 +45,32 @@ export class UsersFormComponent implements OnChanges, OnInit {
 
   onDateChange(event: MatDatepickerInputEvent<any, any>) {
     if (!event.value) {
-      return
+      return;
     }
 
     this.userSelected.birthDate = convertDateObjToPtBrDate(event.value);
 
-    console.log(this.userSelected)
+    console.log(this.userSelected);
+  }
+
+  displayFn(genreId: number): string {
+    const genreFound = this.genresList.find((genre) => genre.id === genreId);
+
+    return genreFound ? genreFound.description : '';
+  }
+
+  filterGenres(text: string): void {
+    if (typeof text === 'number') return;
+
+    const searchTerm = text.toLowerCase();
+
+    this.filteredGenresList = this.genresList.filter((genre) => {
+      return genre.description.toLowerCase().includes(searchTerm);
+    });
+  }
+
+  inAnyCheckboxChecked(): boolean {
+    return this.userSelected.musics.some(music => music.isFavorite);
   }
 
   private setMinAndMaxDate() {

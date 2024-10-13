@@ -1,11 +1,17 @@
 <mat-card>
   <mat-card-content>
-
-    <form class="user-form" #userForm="ngForm" appPasswordConfirmationValidator> <!-- Interessante para os valores do elementos de forma "global", bastante util na criação na logica de confirmação de senha.-->
+    <form class="user-form" #userForm="ngForm" appPasswordConfirmationValidator>
+      <!-- Interessante para os valores do elementos de forma "global", bastante util na criação na logica de confirmação de senha.-->
       <div class="user-form__row">
         <mat-form-field class="user-form__item user-form__item-100">
           <mat-label>Nome:</mat-label>
-          <input type="text" name="nome" [(ngModel)]="userSelected.name" matInput required />
+          <input
+            type="text"
+            name="nome"
+            [(ngModel)]="userSelected.name"
+            matInput
+            required
+          />
           <mat-error>O campo <strong>Nome</strong> é obrigatório.</mat-error>
         </mat-form-field>
       </div>
@@ -21,10 +27,22 @@
             [ngModelOptions]="{ updateOn: 'blur' }"
             [appCredentialsValidator]="'username'"
             matInput
-            required />
-          <mat-hint>O <strong>Usuário</strong> será utilizado para o  login.</mat-hint> <!-- Apenas será mostrado quando o compo estiver válido. -->
-          <mat-error *ngIf="usernameControl.hasError('required')">O campo <strong>Usuário</strong> é obrigatório.</mat-error>
-          <mat-error *ngIf="usernameControl.hasError('invalidUsername') && !usernameControl.hasError('required')">Este <strong>Usuário</strong> já está sendo utilizando.</mat-error>
+            required
+          />
+          <mat-hint
+            >O <strong>Usuário</strong> será utilizado para o login.</mat-hint
+          >
+          <!-- Apenas será mostrado quando o compo estiver válido. -->
+          <mat-error *ngIf="usernameControl.hasError('required')"
+            >O campo <strong>Usuário</strong> é obrigatório.</mat-error
+          >
+          <mat-error
+            *ngIf="
+              usernameControl.hasError('invalidUsername') &&
+              !usernameControl.hasError('required')
+            "
+            >Este <strong>Usuário</strong> já está sendo utilizando.</mat-error
+          >
         </mat-form-field>
 
         <mat-form-field class="user-form__item user-form__item-50">
@@ -38,15 +56,29 @@
             [appCredentialsValidator]="'email'"
             matInput
             appEmailPatternValidator
-            required />
-          <mat-error *ngIf="emailControl.hasError('required')">O campo <strong>Email</strong> é obrigatório.</mat-error>
-          <mat-error *ngIf="emailControl.hasError('invalidEmail') && !usernameControl.hasError('required')">Este <strong>Email</strong> já está sendo utilizando.</mat-error>
-          <mat-error *ngIf="emailControl.hasError('invalidEmailPattern') && !emailControl.hasError('required')">O <strong>Email</strong> é invalido.</mat-error>
+            required
+          />
+          <mat-error *ngIf="emailControl.hasError('required')"
+            >O campo <strong>Email</strong> é obrigatório.</mat-error
+          >
+          <mat-error
+            *ngIf="
+              emailControl.hasError('invalidEmail') &&
+              !usernameControl.hasError('required')
+            "
+            >Este <strong>Email</strong> já está sendo utilizando.</mat-error
+          >
+          <mat-error
+            *ngIf="
+              emailControl.hasError('invalidEmailPattern') &&
+              !emailControl.hasError('required')
+            "
+            >O <strong>Email</strong> é invalido.</mat-error
+          >
         </mat-form-field>
       </div>
 
       <div class="user-form__row">
-
         <mat-form-field class="user-form__item user-form__item-50">
           <mat-label>Senha: </mat-label>
           <input
@@ -57,20 +89,29 @@
             (ngModelChange)="onPasswordChange($event)"
             #passwordControl="ngModel"
             appPasswordStrengthValidator
-            required />
+            required
+          />
 
-          <mat-error *ngIf="passwordControl.hasError('required')">O campo <strong>Senha</strong> é obrigatório.</mat-error>
+          <mat-error *ngIf="passwordControl.hasError('required')"
+            >O campo <strong>Senha</strong> é obrigatório.</mat-error
+          >
 
-          <mat-error *ngIf="passwordControl.hasError('invalidPasswordStrength') && !passwordControl.hasError('required')">
+          <mat-error
+            *ngIf="
+              passwordControl.hasError('invalidPasswordStrength') &&
+              !passwordControl.hasError('required')
+            "
+          >
             Digite uma senha <strong>mas forte</strong>.
           </mat-error>
           <mat-progress-bar
-          [value]="passwordStrengthValue"
-          [ngClass]="{
-            'weak-password': passwordStrengthValue === 0 || passwordStrengthValue === 30,
-            'medium-password': passwordStrengthValue === 60,
-            'strong-password': passwordStrengthValue === 100
-          }"
+            [value]="passwordStrengthValue"
+            [ngClass]="{
+              'weak-password':
+                passwordStrengthValue === 0 || passwordStrengthValue === 30,
+              'medium-password': passwordStrengthValue === 60,
+              'strong-password': passwordStrengthValue === 100
+            }"
           ></mat-progress-bar>
         </mat-form-field>
 
@@ -83,17 +124,23 @@
             matInput
             ngModel
             #passwordConfirmationControl="ngModel"
-            required />
+            required
+          />
 
           <mat-error *ngIf="passwordConfirmationControl.hasError('required')">
             O campo <strong>Confirmação de Senha</strong> é obrigatório.
           </mat-error>
 
-          <mat-error *ngIf="passwordConfirmationControl.hasError('invalidPasswordConfirmation') && !passwordConfirmationControl.hasError('required')">
+          <mat-error
+            *ngIf="
+              passwordConfirmationControl.hasError(
+                'invalidPasswordConfirmation'
+              ) && !passwordConfirmationControl.hasError('required')
+            "
+          >
             As <strong>Senhas</strong> estão incorretas.
           </mat-error>
         </mat-form-field>
-
       </div>
 
       <div class="user-form__row">
@@ -110,28 +157,120 @@
             readonly
             required
           />
-          <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+          <mat-datepicker-toggle
+            matIconSuffix
+            [for]="picker"
+          ></mat-datepicker-toggle>
           <mat-datepicker #picker>
             <mat-datepicker-actions>
               <button mat-button matDatepickerCancel>Cancelar</button>
-              <button mat-raised-button matDatepickerApply color="primary">Confirmar</button>
+              <button mat-raised-button matDatepickerApply color="primary">
+                Confirmar
+              </button>
             </mat-datepicker-actions>
           </mat-datepicker>
           <mat-hint>dd/mm/aaaa</mat-hint>
-          <mat-error>O campo <strong>Data de Nascimento</strong> é obrigatório.</mat-error>
+          <mat-error
+            >O campo <strong>Data de Nascimento</strong> é
+            obrigatório.</mat-error
+          >
         </mat-form-field>
 
         <mat-form-field class="user-form__item user-form__item-50">
           <mat-label>Estado:</mat-label>
-            <mat-select name="estado" [(ngModel)]="userSelected.state" required>
-              <mat-option>-</mat-option>
-              <mat-option *ngFor="let state of statesList" [value]="state.id">{{ state.descricao }}</mat-option>
-            </mat-select>
-            <mat-error>O campo <strong>Estado</strong> é obrigatório.</mat-error>
-          </mat-form-field>
+          <mat-select name="estado" [(ngModel)]="userSelected.state" required>
+            <mat-option>-</mat-option>
+            <mat-option *ngFor="let state of statesList" [value]="state.id">{{
+              state.descricao
+            }}</mat-option>
+          </mat-select>
+          <mat-error>O campo <strong>Estado</strong> é obrigatório.</mat-error>
+        </mat-form-field>
       </div>
 
-    </form>
+      <div class="user-form__row">
+        <div class="user-form__musics">
+          <mat-divider></mat-divider>
 
+          <div class="user-form__musics-title">
+            <h1>Minhas Músicas:</h1>
+          </div>
+
+          <table
+            class="user-form__item user-form__item-100"
+            mat-table
+            [dataSource]="userSelected.musics"
+          >
+            <ng-container matColumnDef="title">
+              <th mat-header-cell *matHeaderCellDef>Título</th>
+              <!-- solução desenvolvida para diferenciar o campo "name" do elemento "input" com os demais (let i = index). Com isso, o campo "name" passa a ser uma atributo pois irar receber uma valor "externo/dinâmico" (que no caso seria o index). -->
+              <td mat-cell *matCellDef="let element; let i = index">
+                <mat-form-field>
+                  <mat-label>Titulo:</mat-label>
+                  <input
+                    type="text"
+                    matInput
+                    [name]="'titulo-' + i"
+                    [(ngModel)]="element.title"
+                    required
+                  />
+                  <mat-error
+                    >O <strong>Título</strong> é obrigatório.</mat-error
+                  >
+                </mat-form-field>
+              </td>
+            </ng-container>
+
+            <ng-container matColumnDef="band">
+              <th mat-header-cell *matHeaderCellDef>Banda</th>
+              <td mat-cell *matCellDef="let element; let i = index">
+                <mat-form-field>
+                  <mat-label>Banda:</mat-label>
+                  <input
+                    type="text"
+                    matInput
+                    [name]="'banda-' + i"
+                    [(ngModel)]="element.band"
+                    required
+                  />
+                  <mat-error>A <strong>Banda</strong> é obrigatório.</mat-error>
+                </mat-form-field>
+              </td>
+            </ng-container>
+
+            <ng-container matColumnDef="genre">
+              <th mat-header-cell *matHeaderCellDef>Gênero</th>
+              <td mat-cell *matCellDef="let element; let i = index">
+                <mat-form-field class="example-full-width">
+                  <mat-label>Gênero:</mat-label>
+                  <input
+                    type="text"
+                    [name]="'genero-' + i"
+                    [(ngModel)]="element.genre"
+                    [matAutocomplete]="auto"
+                    (ngModelChange)="filterGenres($event)"
+                    matInput
+                    required
+                  />
+                  <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFn.bind(this)"> <!-- foi necessário adiciona o ".bind(this)" para o "displayWith" entender o contexto do "this". Com isso, entendo a logica das propriedades do componente e do "find".-->
+                    <mat-option *ngFor="let genre of filteredGenresList" [value]="genre.id">{{ genre.description }}</mat-option>
+                  </mat-autocomplete>
+                </mat-form-field>
+              </td>
+            </ng-container>
+
+            <ng-container matColumnDef="favorite">
+              <th mat-header-cell *matHeaderCellDef>Favorito</th>
+              <td mat-cell *matCellDef="let element; let i = index">
+                <mat-checkbox [name]="'favorito' + i" [(ngModel)]="element.isFavorite" [disabled]="inAnyCheckboxChecked() && !element.isFavorite"></mat-checkbox>
+              </td>
+            </ng-container>
+
+            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+          </table>
+        </div>
+      </div>
+    </form>
   </mat-card-content>
 </mat-card>
