@@ -6,6 +6,8 @@ import { UsersListResponse } from './types/users-list-response';
 import { GenresListResponse } from './types/genres-list-response';
 import { StatesListResponse } from './types/states-response';
 import { IUser } from './interfaces/user/user.interface';
+import { MatDialog } from '@angular/material/dialog';
+import { UserBeforeAndAfterDialogComponent } from './components/user-before-and-after-dialog/user-before-and-after-dialog.component';
 
 @Component({
   selector: 'app-root',
@@ -23,7 +25,8 @@ export class AppComponent implements OnInit {
   constructor(
     private readonly _usersService: UsersService,
     private readonly _genresService: GenresService,
-    private readonly _brazilianStatesService: BrazilianStatesService
+    private readonly _brazilianStatesService: BrazilianStatesService,
+    private readonly _matDialog: MatDialog
   ) {}
   ngOnInit(): void {
     this.getUsers();
@@ -38,6 +41,48 @@ export class AppComponent implements OnInit {
       this.userSelectedIndex = userIndex;
       this.userSelected = structuredClone(userFound); // structuredClone() = método javascript que é responsável por clonar valores (objetos...).
     }
+  }
+
+  onFormSubmit() {
+    if (this.userSelectedIndex === undefined) return;
+
+    const originalUser = this.usersList[this.userSelectedIndex];
+
+    this.openBeforeAndAfterDialog(
+      originalUser,
+      this.userSelected,
+      this.userSelectedIndex
+    );
+  }
+
+  openBeforeAndAfterDialog(
+    originalUser: IUser,
+    updatedUser: IUser,
+    userSelectedIndex: number
+  ) {
+    // armazenando em uma varável para ter possuir a referencia do dailog, para observar (Observable) o dialog fechar e executar as alterações dos dados do usuário
+    const dialogRef = this._matDialog.open(UserBeforeAndAfterDialogComponent, {
+      data: {
+        originalUser,
+        updatedUser,
+      },
+      minWidth: '70%',
+    });
+
+    dialogRef.afterClosed().subscribe((result) => {
+      // console.log(result)
+      if (result) {
+        this.confirmUserUpdate(updatedUser, userSelectedIndex);
+      }
+    });
+  }
+
+  confirmUserUpdate(updatedUser: IUser, userSelectedIndex: number) {
+    this.usersList[userSelectedIndex] = structuredClone(updatedUser);
+
+    console.group('Alteração finalizada - Lista de usuários atualizada:');
+    console.log('Lista de usuário atual', this.usersList);
+    console.groupEnd();
   }
 
   private getUsers() {

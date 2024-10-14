@@ -44,4 +44,12 @@ export class BrazilianStatesService {
       }, 3000);
     });
   }
+
+  getBrazilianStatesDescription(stateId: number): string {
+    const stateDescription = this.brazilianStateList.find(
+      (genre) => genre.id === stateId
+    )?.descricao;
+
+    return stateDescription ? stateDescription : '';
+  }
 }

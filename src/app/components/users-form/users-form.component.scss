@@ -27,6 +27,11 @@
   &__musics-title {
     padding: 20px;
   }
+
+  &__button-container {
+    display: flex;
+    justify-content: end;
+  }
 }
 
 .weak-password {

@@ -1,4 +1,4 @@
-import { Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
+import { Component, ElementRef, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges } from '@angular/core';
 import { GenresListResponse } from '../../types/genres-list-response';
 import { StatesListResponse } from '../../types/states-response';
 import { IUser } from '../../interfaces/user/user.interface';
@@ -6,6 +6,7 @@ import { getPasswordStrengthValue } from '../../utils/get-password-strength-valu
 import { convertPtBrDateToObj } from '../../utils/convert-pt-br-date-to-obj';
 import { MatDatepickerInputEvent } from '@angular/material/datepicker';
 import { convertDateObjToPtBrDate } from '../../utils/convert-date-obj-to-pt-br-date';
+import { NgForm } from '@angular/forms';
 
 @Component({
   selector: 'app-users-form',
@@ -23,6 +24,10 @@ export class UsersFormComponent implements OnChanges, OnInit {
   @Input({ required: true }) genresList: GenresListResponse = [];
   @Input({ required: true }) statesList: StatesListResponse = [];
   @Input({ required: true }) userSelected: IUser = {} as IUser;
+
+  @Output('onFormSubmit') onFormSubmitEmitt = new EventEmitter<void>();
+
+  constructor(private readonly _el: ElementRef) {}
 
   ngOnInit(): void {
     this.setMinAndMaxDate();
@@ -49,8 +54,6 @@ export class UsersFormComponent implements OnChanges, OnInit {
     }
 
     this.userSelected.birthDate = convertDateObjToPtBrDate(event.value);
-
-    console.log(this.userSelected);
   }
 
   displayFn(genreId: number): string {
@@ -70,7 +73,29 @@ export class UsersFormComponent implements OnChanges, OnInit {
   }
 
   inAnyCheckboxChecked(): boolean {
-    return this.userSelected.musics.some(music => music.isFavorite);
+    return this.userSelected.musics.some((music) => music.isFavorite);
+  }
+
+  onFormSubmit(form: NgForm) {
+    if (form.invalid) {
+      this.focusOnInvalidControl(form);
+
+      return
+    }
+
+    this.onFormSubmitEmitt.emit(); // para enviar paro o elemento pai, que o formulário foi enviado, que está válido e foi finalizado a edição dele.
+  }
+
+  focusOnInvalidControl(form: NgForm) {
+    for (const control of Object.keys(form.controls)) {
+      if (form.controls[control].invalid) {
+        const invalidControl: HTMLElement = this._el.nativeElement.querySelector(`[name=${control}]`);
+
+        invalidControl.focus();
+
+        break;
+      }
+    }
   }
 
   private setMinAndMaxDate() {

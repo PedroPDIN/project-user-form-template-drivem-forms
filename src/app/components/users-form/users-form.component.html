@@ -1,6 +1,6 @@
 <mat-card>
   <mat-card-content>
-    <form class="user-form" #userForm="ngForm" appPasswordConfirmationValidator>
+    <form class="user-form" #userForm="ngForm" (ngSubmit)="onFormSubmit(userForm)" appPasswordConfirmationValidator>
       <!-- Interessante para os valores do elementos de forma "global", bastante util na criação na logica de confirmação de senha.-->
       <div class="user-form__row">
         <mat-form-field class="user-form__item user-form__item-100">
@@ -255,6 +255,7 @@
                   <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFn.bind(this)"> <!-- foi necessário adiciona o ".bind(this)" para o "displayWith" entender o contexto do "this". Com isso, entendo a logica das propriedades do componente e do "find".-->
                     <mat-option *ngFor="let genre of filteredGenresList" [value]="genre.id">{{ genre.description }}</mat-option>
                   </mat-autocomplete>
+                  <mat-error>O <strong>Gênero</strong> é obrigatório.</mat-error>
                 </mat-form-field>
               </td>
             </ng-container>
@@ -270,6 +271,10 @@
             <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
           </table>
         </div>
+      </div>
+
+      <div class="user-form__button-container">
+        <button type="submit" mat-raised-button color="primary">Salvar</button>
       </div>
     </form>
   </mat-card-content>
